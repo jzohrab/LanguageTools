@@ -1,0 +1,5 @@
+# ignore text and generated files.
+
+.DS_Store
+text/
+audio/

@@ -1,0 +1,14 @@
+# L2 at the top, L1 at the bottom.
+# Use DeepL to make and tweak the translations.
+# Lines starting with # are comments.
+
+El rey se acercó a ver qué pasaba.
+El Marqués le había enviado muchos obsequios.
+Lo subió en su carruaje para que les acompañara en el paseo.
+
+# This is the L2-L1 separator, and is required.
+---
+
+The king came over to see what was going on.
+The Marquis had sent him many gifts.
+He put him in his carriage to accompany them on their journey.
