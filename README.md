@@ -19,10 +19,10 @@ Run `ruby gen_audio_cards.rb text/nov24b.txt esp`
 
 ### Sample
 
-Copy the file in `samples` to the `text` folder, rename to `a.txt`.
+Copy the file in `samples` to the appropriate `text` folder (in this case, it's Spanish, so `text/esp`).
 
 Run the program:
 
 ```
-ruby gen_audio_cards.rb text/a.txt esp
+ruby gen_audio_cards.rb
 ```
