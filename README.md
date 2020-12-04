@@ -15,7 +15,14 @@ _Note: this code is hacked together for my personal use, I haven't generalized i
 
 In `text` folder, put a file with L2 sentences on the top, a separator `---`, and L1 sentences on the bottom.
 
-Run `ruby gen_audio_cards.rb text/nov24b.txt esp`
+Run `ruby gen_audio_cards.rb`
+
+The above will:
+
+* generate L1 and L2 mp3 files using AWS Polly
+* generate card data combining the L1 and L2 translations with their sound files
+* post the cards to Anki using AnkiConnect
+* move the processed file from `text` to `text-done`
 
 ### Sample
 
