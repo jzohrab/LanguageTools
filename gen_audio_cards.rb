@@ -58,10 +58,9 @@ def getSettingsFor(lang)
       voice: 'Conchita'  # Luisa, Enrique
     }
   when 'deu' then
-    raise 'Fix the german settings'
     return {
       # Assumption
-      deck: 'German::Goldlist',
+      deck: 'German::Audio',
       voice: 'Vicki'  # Marlene, Hans
     }
   else
