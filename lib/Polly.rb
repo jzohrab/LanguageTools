@@ -23,7 +23,13 @@ class Polly
   end
   
   def self.create_ssml_text(text)
-    "<speak>#{text}</speak>"
+    # If a sentence ends with underline-punctuation,
+    # remove the punctuation b/c the AWS text-to-voice
+    # says the punctuation.
+    tmp = text.
+            gsub(/_[.?!]/, '_')
+            .gsub(/\w_+\w/, '<amazon:breath/>')
+    "<speak>#{tmp}</speak>"
   end
 
   def self.create_mp3(text, voice_id, filename)
@@ -98,6 +104,9 @@ if __FILE__ == $0
       data << { text: "#{v} says I have a black cat.", voice_id: v, filename: "1_cat_#{v}.mp3" }
     end
     Polly.bulk_create_mp3(data)
+  when 'pauses' then
+    Polly.create_mp3("Haben Sie Probleme mit ___ _____?", "Vicki", "p_breath.mp3")
+    Polly.create_mp3("Haben Sie Probleme mit Ihren Zähnen?", "Vicki", "p_actual.mp3")
   else
     puts "Unknown option, 'voices' or 'test' only"
   end
