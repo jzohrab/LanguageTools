@@ -19,7 +19,9 @@ $idnum = 0
 def getLangCode(fname)
   # Hardcode for now.  Later, get it from a directive at the top of the file,
   # eg. "#deu" or "#esp"
-  return 'deu'
+  content = File.read(fname)
+  firstline = content.split("\n")[0]
+  return firstline.gsub(/ /, '').gsub('#', '')
 end
 
 
@@ -28,7 +30,7 @@ def getSettingsFor(lang)
   when 'esp' then
     return {
       # Assumption
-      deck: 'Spanish::Goldlist',
+      deck: 'Spanish::01_Spanish_Vocab',
       voice: 'Conchita'  # Luisa, Enrique
     }
   when 'deu' then
@@ -38,7 +40,7 @@ def getSettingsFor(lang)
       voice: 'Vicki'  # Marlene, Hans
     }
   else
-    raise "Bad lang code, should be esp or deu"
+    raise "First line of file should contain lang code esp or deu, got #{lang}"
   end
 end
 
@@ -63,7 +65,11 @@ def getClozes(lines)
     cloze = s.match(clozeRe)[1]
     ans, hint = cloze.split('|')
     blanks = ans.gsub(/[^ ]/, '_')
-    question = "#{hint}.  #{s.gsub(clozeRe, blanks)}"
+    question = "#{s.gsub(clozeRe, blanks)}"
+    if (!hint.nil?) then
+      question = "#{hint}.  #{question}"
+    end
+
     answer = s.gsub(clozeRe, ans)
     {
       q: question,
