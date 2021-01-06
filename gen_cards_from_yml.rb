@@ -96,6 +96,9 @@ def createAnkiConnectPostBody(data, deck)
       fields: {
         Word: d[:word],
         Word_Audio: sound(d[:waudio]),
+        Article: d[:article],
+        Plural: d[:plural],
+        Plural_Audio: sound(d[:paudio]),
         Sentence_with_blank: d[:blanks],
         Sentence_with_blank_audio: sound(d[:baudio]),
         Sentence_full: d[:sentence],
