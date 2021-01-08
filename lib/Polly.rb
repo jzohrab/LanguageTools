@@ -26,9 +26,13 @@ class Polly
     # If a sentence ends with underline-punctuation,
     # remove the punctuation b/c the AWS text-to-voice
     # says the punctuation.
+
+    # If the sentence contains '__', sometimes AWS polly says
+    # 'guion bajo', etc ... so make it three underscores.
     tmp = text.
-            gsub(/_[.?!]/, '_')
-            .gsub(/\w_+\w/, '<amazon:breath/>')
+            gsub(/_[.?!]/, '_').
+            gsub('__', '___').
+            gsub(/\w_+\w/, '<amazon:breath/>')
     "<speak>#{tmp}</speak>"
   end
 
