@@ -16,7 +16,7 @@ class AudioClozeHelpers
               select { |e| !e.nil? }
 
     question = text.gsub(clozeRe, '___')
-    if (!hints.nil?) then
+    if (hints.size > 0) then
       question = "#{hints.join(', ')}.  #{question}"
     end
 
@@ -56,11 +56,13 @@ if __FILE__ == $0
   end
 
   check_q("A *q1|h1* ok.", "h1.  A ___ ok.")
+  check_q("A *q1* ok.", "A ___ ok.")
   check_q("A q1 ok.", "A q1 ok.")
   check_q("A *q1|h1*, *q2|h2* ok.", "h1, h2.  A ___, ___ ok.")
   check_q("A *q1|h1*, *q2* *q3|h3* ok.", "h1, h3.  A ___, ___ ___ ok.")
 
   check_a("A *q1|h1* ok.", "A q1 ok.")
+  check_a("A *q1* ok.", "A q1 ok.")
   check_a("A q1 ok.", "A q1 ok.")
   check_a("A *q1|h1*, *q2|h2* ok.", "A q1, q2 ok.")
   check_a("A *q1|h1*, *q2* *q3|h3* ok.", "A q1, q2 q3 ok.")
