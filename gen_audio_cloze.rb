@@ -12,6 +12,7 @@ require 'date'
 require 'net/http'
 require 'json'
 require_relative './lib/Polly'
+require_relative './lib/AudioClozeHelpers'
 
 # Generated audio files have an incremented value in the filename to disambiguate.
 $idnum = 0
@@ -60,21 +61,11 @@ end
 
 # Der Hund *des Kindes|das Kind*. => das Kind.  Der Hund ___ _____.; Der Hund des Kindes.
 def getClozes(lines)
-  lines.map do |s|
-    clozeRe = /\*(.*?)\*/
-    cloze = s.match(clozeRe)[1]
-    ans, hint = cloze.split('|')
-    blanks = ans.gsub(/[^ ]/, '_')
-    question = "#{s.gsub(clozeRe, blanks)}"
-    if (!hint.nil?) then
-      question = "#{hint}.  #{question}"
-    end
-
-    answer = s.gsub(clozeRe, ans)
+  lines.map do |text|
     {
-      q: question,
+      q: AudioClozeHelpers.get_question(text),
       qaudio: getAudioFilename(),
-      a: answer,
+      a: AudioClozeHelpers.get_answer(text),
       aaudio: getAudioFilename()
     }
   end
