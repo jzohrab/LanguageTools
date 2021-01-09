@@ -3,17 +3,18 @@
 class AudioClozeHelpers
 
   def self.get_question(text)
-    clozeRe = /\*(.*?)\*/
+    # Below ugly re gets the question part, and the optional hint
+    # part, in array of arrays.  e.g.
+    # "F *q1|h1*, *q2|h2* *q3* ok." =>
+    # [["q1", "h1"], ["q2", "h2"], ["q3", nil]]
+    clozeRe = /\*(.*?)(?:\|(.*?))?\*/
     if (text !~ clozeRe)
       return text
     end
 
     clozes = text.scan(clozeRe)
 
-    hints = clozes.
-              map { |s| s[0].split('|') }.
-              map { |a| a[1] }.
-              select { |e| !e.nil? }
+    hints = clozes.map { |a| a[1] }.select { |e| !e.nil? }
 
     question = text.gsub(clozeRe, '___')
     if (hints.size > 0) then
@@ -60,7 +61,7 @@ if __FILE__ == $0
   # check_q("C *q1a q1b|h1* ok.", "h1.  C ___ ___ ok.")
   # check_q("D *q1b q1b* ok.", "D ___ ___ ok.")
   check_q("E q1 ok.", "E q1 ok.")
-  check_q("F *q1|h1*, *q2|h2* ok.", "h1, h2.  F ___, ___ ok.")
+  check_q("F *q1|h1*, *q2|h2* *q3* ok.", "h1, h2.  F ___, ___ ___ ok.")
   # check_q("G *q1|h1*, *q2* *q3 q3b|h3* ok.", "h1, h3.  G ___, ___ ___ ___ ok.")
 
   check_a("A *q1|h1* ok.", "A q1 ok.")
