@@ -73,6 +73,7 @@ if __FILE__ == $0
   check_q("qE q1 ok.", "qE q1 ok.")
   check_q("qF *q1|h1*, *q2|h2* *q3* ok.", "h1, h2.  qF ___, ___ ___ ok.")
   check_q("qG *q1|h1*, *q2* *q3 q3b|h3* ok.", "h1, h3.  qG ___, ___ ___ ___ ok.")
+  check_q("qH *q1, q1b|h1*, *q2, q2b* *q3 q3b|h3* ok.", "h1, h3.  qH ___, ___, ___, ___ ___ ___ ok.")
 
   check_a("aA *q1|h1* ok.", "aA q1 ok.")
   check_a("aB *q1* ok.", "aB q1 ok.")
