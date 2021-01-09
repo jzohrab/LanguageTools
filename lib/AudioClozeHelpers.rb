@@ -7,14 +7,20 @@ class AudioClozeHelpers
     # part, in array of arrays.  e.g.
     # "F *q1|h1*, *q2|h2* *q3* ok." =>
     # [["q1", "h1"], ["q2", "h2"], ["q3", nil]]
-    clozeRe = /\*(.*?)(?:\|(.*?))?\*/
+    clozeRe = /\*(?<answer>.*?)(?:\|(?<hint>.*?))?\*/
     if (text !~ clozeRe)
       return text
     end
 
-    clozes = text.scan(clozeRe)
+    ms = text.to_enum(:scan, clozeRe).map { Regexp.last_match }
+    # puts ms.inspect
+    # ms.each do |m|
+    #   puts m[0]
+    #   puts m[:answer]
+    #   puts m[:hint]
+    # end
 
-    hints = clozes.map { |a| a[1] }.select { |e| !e.nil? }
+    hints = ms.map { |m| m[:hint] }.select { |h| !h.nil? }
 
     question = text.gsub(clozeRe, '___')
     if (hints.size > 0) then
