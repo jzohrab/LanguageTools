@@ -56,14 +56,17 @@ if __FILE__ == $0
   end
 
   check_q("A *q1|h1* ok.", "h1.  A ___ ok.")
-  check_q("A *q1* ok.", "A ___ ok.")
-  check_q("A q1 ok.", "A q1 ok.")
-  check_q("A *q1|h1*, *q2|h2* ok.", "h1, h2.  A ___, ___ ok.")
-  check_q("A *q1|h1*, *q2* *q3|h3* ok.", "h1, h3.  A ___, ___ ___ ok.")
+  check_q("B *q1* ok.", "B ___ ok.")
+  # check_q("C *q1a q1b|h1* ok.", "h1.  C ___ ___ ok.")
+  # check_q("D *q1b q1b* ok.", "D ___ ___ ok.")
+  check_q("E q1 ok.", "E q1 ok.")
+  check_q("F *q1|h1*, *q2|h2* ok.", "h1, h2.  F ___, ___ ok.")
+  # check_q("G *q1|h1*, *q2* *q3 q3b|h3* ok.", "h1, h3.  G ___, ___ ___ ___ ok.")
 
   check_a("A *q1|h1* ok.", "A q1 ok.")
-  check_a("A *q1* ok.", "A q1 ok.")
-  check_a("A q1 ok.", "A q1 ok.")
-  check_a("A *q1|h1*, *q2|h2* ok.", "A q1, q2 ok.")
-  check_a("A *q1|h1*, *q2* *q3|h3* ok.", "A q1, q2 q3 ok.")
+  check_a("B *q1* ok.", "B q1 ok.")
+  check_a("C q1 ok.", "C q1 ok.")
+  check_a("D *q1|h1*, *q2|h2* ok.", "D q1, q2 ok.")
+  check_a("E *q1|h1*, *q2* *q3|h3* ok.", "E q1, q2 q3 ok.")
+  check_a("F *q1 q1b|h1*, *q2 q2b* *q3 q3b|h3* ok.", "F q1 q1b, q2 q2b q3 q3b ok.")
 end
