@@ -18,8 +18,7 @@ require_relative './lib/AudioClozeHelpers'
 $idnum = 0
 
 def getLangCode(fname)
-  # Hardcode for now.  Later, get it from a directive at the top of the file,
-  # eg. "#deu" or "#esp"
+  # eg. "#deu" or "#esp", placed at top of the file.
   content = File.read(fname)
   firstline = content.split("\n")[0]
   return firstline.gsub(/ /, '').gsub('#', '')
@@ -109,7 +108,8 @@ def createAnkiConnectPostBody(data, deck)
         Sentence_with_blank_audio: "[sound:#{d[:qaudio]}]",
         Sentence_full: d[:a],
         Sentence_Audio: "[sound:#{d[:aaudio]}]"
-      }
+      },
+      tags: []
     }
   end
 
@@ -129,8 +129,11 @@ def post_notes_to_AnkiConnect(data)
   puts uri.path
   req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
   req.body = data.to_json
+  puts JSON.pretty_generate(data)
   res = http.request(req)
-  puts "response #{res.body}"
+  puts "response body: #{res.body}"
+  puts "Response:"
+  puts res.inspect
 rescue => e
   puts "failed #{e}"
 end
