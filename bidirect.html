@@ -1,0 +1,55 @@
+<html>
+  <head>
+
+    <style>
+      body { font-family: Helvetica; }
+      .box { display: flex; }
+      .col { width: 400px; padding: 10px; }
+    </style>
+
+    <script language="javascript">
+      function getParagraphs(elid) {
+        var t = document.getElementById(elid).value;
+        var pars = t.split(/\r?\n/g);
+        for (var i = 0; i < pars.length; ++i) {
+          // alert(pars[i])
+        }
+        // alert(enteredText);
+        return pars;
+      }
+
+      function writeText() {
+        var l1pars = getParagraphs("L1");
+        var l2pars = getParagraphs("L2");
+        var pairs = l1pars.map(function(e, i) {
+          return [e, l2pars[i]];
+        });
+
+        var lines = pairs.map(function (pair) {
+          var content = pair.map((e) => { return `<div class="col">${e}</div>`; });
+          return `<div class="box">\n${content.join('')}</div>`
+        });
+        // alert(lines.join('\n'));
+
+        document.getElementById('output').innerHTML = lines.join('\n');
+      }
+    </script>
+  </head>
+  <body>
+    <div class="box">
+      <div class="col">
+        <p>Left text</p>
+        <textarea id="L1" rows="4" cols="45"></textarea>
+      </div>
+      <div class="col">
+        <p>Right text</p>
+        <textarea id="L2" rows="4" cols="45"></textarea>
+      </div>
+    </div>
+    <button type="button" onclick="writeText();">join</button>
+    <hr />
+    <div id="output">
+      <i>Output will be written here.</i>
+    </div>
+  </body>
+</html>
