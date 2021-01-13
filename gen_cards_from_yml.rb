@@ -87,23 +87,36 @@ def sound(fname)
   "[sound:#{fname}]"
 end
 
+def create_hash(d, deck)
+  ret = {
+    Word: d[:word],
+    Word_Audio: sound(d[:waudio]),
+    Article: d[:article],
+    Plural: d[:plural],
+    Plural_Audio: sound(d[:paudio]),
+    Sentence_with_blank: d[:blanks],
+    Sentence_with_blank_audio: sound(d[:baudio]),
+    Sentence_full: d[:sentence],
+    Sentence_Audio: sound(d[:saudio])
+  }
+
+  # Ankiconnect appears to not like nil values, so remove any of those.
+  retkeys = ret.keys
+  retkeys.each do |k|
+    if (ret[k].nil?)
+      ret.delete(k)
+    end
+  end
+  return ret
+end
+
 def createAnkiConnectPostBody(data, deck)
   noteData = data.map do |d|
     {
       deckName: deck,
       # Assumption: model name
       modelName: "Basic_vocab",
-      fields: {
-        Word: d[:word],
-        Word_Audio: sound(d[:waudio]),
-        Article: d[:article],
-        Plural: d[:plural],
-        Plural_Audio: sound(d[:paudio]),
-        Sentence_with_blank: d[:blanks],
-        Sentence_with_blank_audio: sound(d[:baudio]),
-        Sentence_full: d[:sentence],
-        Sentence_Audio: sound(d[:saudio])
-      }
+      fields: create_hash(d, deck)
     }
   end
 
