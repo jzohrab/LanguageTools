@@ -29,6 +29,7 @@ end
 
 def getYml(line)
   clozeRe = /\*(.*?)\*/
+  puts line
   cloze = line.match(clozeRe)[1]
   blanks = cloze.gsub(/[^ ]/, '__').gsub(/_____+/, '____')
 
