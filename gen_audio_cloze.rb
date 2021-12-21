@@ -61,18 +61,31 @@ end
 # Der Hund *des Kindes|das Kind*. => das Kind.  Der Hund ___ _____.; Der Hund des Kindes.
 def getClozes(lines)
   lines.map do |text|
+    qtext = AudioClozeHelpers.get_question(text)
+    qfile = getAudioFilename()
+    atext = AudioClozeHelpers.get_answer(text)
+    afile = getAudioFilename()
+
+    # If the answer and question are the same then don't bother with the question,
+    # as this is just an "exposure card" with no corresponding question card.
+    if (qtext == atext) then
+      qtext = nil
+      qfile = nil
+    end
     {
-      q: AudioClozeHelpers.get_question(text),
-      qaudio: getAudioFilename(),
-      a: AudioClozeHelpers.get_answer(text),
-      aaudio: getAudioFilename()
+      q: qtext,
+      qaudio: qfile,
+      a: atext,
+      aaudio: afile
     }
   end
 end
 
 def getPollyData(clozes, voice)
   voicedata = []
-  voicedata += clozes.map do |d|
+
+  # Ignore empty questions.
+  voicedata += clozes.select { |d| !d[:q].nil? }.map do |d|
     {
       text: d[:q],
       voice_id: voice,
@@ -99,16 +112,25 @@ end
 
 def createAnkiConnectPostBody(data, deck)
   noteData = data.map do |d|
+    fielddata = {
+      Sentence_full: d[:a],
+      Sentence_audio: "[sound:#{d[:aaudio]}]"
+    }
+
+    if (!d[:q].nil?) then
+      extra = {
+        Sentence_with_blank: d[:q],
+        Sentence_with_blank_audio: "[sound:#{d[:qaudio]}]"
+      }
+      fielddata = fielddata.merge(extra)
+    end
+
     {
       deckName: deck,
       # Assumption: model name
       modelName: "Cloze_audio",
-      fields: {
-        Sentence_with_blank: d[:q],
-        Sentence_with_blank_audio: "[sound:#{d[:qaudio]}]",
-        Sentence_full: d[:a],
-        Sentence_Audio: "[sound:#{d[:aaudio]}]"
-      },
+      fields: fielddata,
+      options: { allowDuplicate: true },
       tags: []
     }
   end
@@ -130,6 +152,7 @@ def post_notes_to_AnkiConnect(data)
   req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
   req.body = data.to_json
   puts JSON.pretty_generate(data)
+  puts "request body: #{req.body}"
   res = http.request(req)
   puts "response body: #{res.body}"
   puts "Response:"
@@ -165,3 +188,5 @@ move_audio_files_to_Anki_folder()
 
 postdata = createAnkiConnectPostBody(clozes, settings[:deck])
 post_notes_to_AnkiConnect(postdata)
+
+# puts "DISABLED POLLY"

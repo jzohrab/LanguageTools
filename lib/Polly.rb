@@ -43,6 +43,7 @@ class Polly
       output_format: 'mp3',
       text: self.create_ssml_text(text),
       voice_id: voice_id,
+      sample_rate: '16000',
     }
     resp = polly.synthesize_speech(args)
     

@@ -1,6 +1,5 @@
 # coding: utf-8
-# Read L1/L2 file, weave to form stuff.
-# file is split by '---', L2 is on top, L1 on bottom.
+# Read card yml file, gen cards and post to Anki via Ankiconnect.
 #
 # Sample call:
 #
@@ -107,6 +106,9 @@ def create_hash(d, deck)
       ret.delete(k)
     end
   end
+  if (ret[:Plural].nil?)
+    ret.delete(:Plural_Audio)
+  end
   return ret
 end
 
@@ -116,7 +118,11 @@ def createAnkiConnectPostBody(data, deck)
       deckName: deck,
       # Assumption: model name
       modelName: "Basic_vocab",
-      fields: create_hash(d, deck)
+      fields: create_hash(d, deck),
+      options: {
+        allowDuplicate: true,
+        duplicateScope: "deck"
+      }
     }
   end
 
