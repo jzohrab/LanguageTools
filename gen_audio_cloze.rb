@@ -15,9 +15,6 @@ require_relative './lib/audio_cloze'
 require_relative './lib/Polly'
 require_relative './lib/AudioClozeHelpers'
 
-# Generated audio files have an incremented value in the filename to disambiguate.
-$idnum = 0
-
 def getLangCode(fname)
   # eg. "#deu" or "#esp", placed at top of the file.
   content = File.read(fname)
@@ -53,40 +50,6 @@ def cleanLines(s)
     select { |s| s !~ /^#/ }
 end
 
-def getAudioFilename()
-  baseid = Time.now.strftime("%Y%m%d_%H%M%S")
-  $idnum += 1
-  "#{baseid}_#{$idnum}.mp3"
-end
-
-# Der Hund *des Kindes|das Kind*. => das Kind.  Der Hund ___ _____.; Der Hund des Kindes.
-def getClozes(lines)
-  lines.map do |text|
-    qtext = AudioClozeHelpers.get_question(text)
-    qfile = getAudioFilename()
-    atext = AudioClozeHelpers.get_answer(text)
-    afile = getAudioFilename()
-
-    # If the answer and question are the same then don't bother with the question,
-    # as this is just an "exposure card" with no corresponding question card.
-    if (qtext == atext) then
-      qtext = nil
-      qfile = nil
-    end
-    {
-      q: qtext,
-      qaudio: qfile,
-      a: atext,
-      aaudio: afile
-    }
-  end
-end
-
-
-def move_audio_files_to_Anki_folder()
-  FileUtils.mv Dir.glob(File.join(AUDIO_OUTFOLDER, '*.mp3')), MEDIA_FOLDER
-end
-
 
 def createAnkiConnectPostBody(data, deck)
   return {
@@ -116,22 +79,6 @@ rescue => e
 end
 
 
-# Assumption: folder name
-MEDIA_FOLDER = '/Users/jeff/Library/Application Support/Anki2/User 1/collection.media/'
-
-AUDIO_OUTFOLDER = File.join(__dir__, 'audio')
-Dir.mkdir(audio_outfolder) unless Dir.exist?(AUDIO_OUTFOLDER)
-
-
-file = ARGV[0]
-raise "Missing file name" if file.nil?
-raise "Missing file #{file}" unless File.exist?(file)
-
-lang = getLangCode(file)
-settings = getSettingsFor(lang)
-lines = cleanLines(File.read(file))
-clozes = lines.map { |s| AudioCloze.new(s) }
-
 # List builder of text to synthesize.
 class FileList
   def initialize(outdir)
@@ -156,8 +103,30 @@ class FileList
   end
 end
 
+
+##########################################
+# Main
+
+# Assumption: folder name
+MEDIA_FOLDER = '/Users/jeff/Library/Application Support/Anki2/User 1/collection.media/'
+
+AUDIO_OUTFOLDER = File.join(__dir__, 'audio')
+Dir.mkdir(audio_outfolder) unless Dir.exist?(AUDIO_OUTFOLDER)
+
+file = ARGV[0]
+raise "Missing file name" if file.nil?
+raise "Missing file #{file}" unless File.exist?(file)
+
+lang = getLangCode(file)
+settings = getSettingsFor(lang)
+clozes = cleanLines(File.read(file)).map { |s| AudioCloze.new(s) }
+
 flist = FileList.new(AUDIO_OUTFOLDER)
 clozes.reduce(flist) { |t, a| a.load_synth(t); t }
+
+# puts "\n\nQUITTING ..."
+# return
+
 voicedata = flist.data.map do |f|
   {
     text: f[:t],
@@ -165,15 +134,7 @@ voicedata = flist.data.map do |f|
     filename: f[:f]
   }
 end
-postdata = createAnkiConnectPostBody(clozes, settings[:deck])
-
-# puts clozes.inspect
-# puts flist.inspect
-# puts voicedata.inspect
-# puts postdata.inspect
-
-# puts "\n\nQUITTING ..."
-# return
-
 Polly.bulk_create_mp3(voicedata)
+
+postdata = createAnkiConnectPostBody(clozes, settings[:deck])
 post_notes_to_AnkiConnect(postdata)
