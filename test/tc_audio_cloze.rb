@@ -19,4 +19,38 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_true(ac.answer.nil?, "nil answer but got #{ac.answer}")
   end
 
+
+  # AudioCloze takes a voice synth object, and asks it to build the
+  # list of things to synthesize.
+  class TestPolly
+    def initialize()
+      @nextFilename = 0
+      @data = []
+    end
+
+    def next_filename()
+      @nextFilename += 1
+      @nextFilename
+    end
+
+    def add_data(filename, text)
+      @data.push({ :f => filename, :t => text })
+    end
+
+    def data()
+      @data.map { |d| "#{d[:f]}: #{d[:t]}" }.join('; ')
+    end
+  end
+
+
+  def test_load_synth
+    ac1 = AudioCloze.new("hi")
+    ac2 = AudioCloze.new("hi *a|b*")
+
+    tp = TestPolly.new()
+    ac1.load_synth(tp)
+    ac2.load_synth(tp)
+    assert_equal('1: hi; 2: b.  hi ___; 3: hi a', tp.data())
+  end
+
 end
