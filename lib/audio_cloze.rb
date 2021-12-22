@@ -36,4 +36,31 @@ class AudioCloze
     @answer_file = load_text(t, @answer)
   end
 
+  # Return json rep for insert into anki via ankiconnect.
+  def json(deck)
+
+    fielddata = {
+      Sentence_full: @question,
+      Sentence_audio: "[sound:#{@question_file}]"
+    }
+
+    if (@answer) then
+      extra = {
+        Sentence_with_blank: @answer,
+        Sentence_with_blank_audio: "[sound:#{@answer_file}]"
+      }
+      fielddata = fielddata.merge(extra)
+    end
+
+    {
+      deckName: deck,
+      # Assumption: model name
+      modelName: "Cloze_audio",
+      fields: fielddata,
+      options: { allowDuplicate: true },
+      tags: []
+    }
+
+  end
+
 end
