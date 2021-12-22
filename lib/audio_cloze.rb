@@ -8,6 +8,9 @@ class AudioCloze
     @text = text
     @question = AudioClozeHelpers.get_question(text)
     @answer = AudioClozeHelpers.get_answer(text)
+    if (@answer == @question) then
+      @answer = nil
+    end
   end
 
   def question()

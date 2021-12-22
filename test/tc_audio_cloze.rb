@@ -12,4 +12,11 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_equal('hi a', ac.answer, 'answer')
   end
 
+  def test_constructor_no_cloze
+    # Sanity check only
+    ac = AudioCloze.new("hi")
+    assert_equal('hi', ac.question, 'question')
+    assert_true(ac.answer.nil?, "nil answer but got #{ac.answer}")
+  end
+
 end
