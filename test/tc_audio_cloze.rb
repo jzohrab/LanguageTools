@@ -48,8 +48,7 @@ class TestAudioCloze < Test::Unit::TestCase
     ac2 = AudioCloze.new("hi *a|b*")
 
     tp = TestPolly.new()
-    ac1.load_synth(tp)
-    ac2.load_synth(tp)
+    [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
     assert_equal('1: hi; 2: b.  hi ___; 3: hi a', tp.data())
   end
 
