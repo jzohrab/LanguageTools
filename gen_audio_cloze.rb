@@ -11,6 +11,7 @@
 require 'date'
 require 'net/http'
 require 'json'
+require_relative './lib/audio_cloze'
 require_relative './lib/Polly'
 require_relative './lib/AudioClozeHelpers'
 
@@ -81,29 +82,6 @@ def getClozes(lines)
   end
 end
 
-def getPollyData(clozes, voice)
-  voicedata = []
-
-  # Ignore empty questions.
-  voicedata += clozes.select { |d| !d[:q].nil? }.map do |d|
-    {
-      text: d[:q],
-      voice_id: voice,
-      filename: File.join(AUDIO_OUTFOLDER, d[:qaudio])
-    }
-  end
-
-  voicedata += clozes.map do |d|
-    {
-      text: d[:a],
-      voice_id: voice,
-      filename: File.join(AUDIO_OUTFOLDER, d[:aaudio])
-    }
-  end
-
-  return voicedata
-end
-
 
 def move_audio_files_to_Anki_folder()
   FileUtils.mv Dir.glob(File.join(AUDIO_OUTFOLDER, '*.mp3')), MEDIA_FOLDER
@@ -111,35 +89,11 @@ end
 
 
 def createAnkiConnectPostBody(data, deck)
-  noteData = data.map do |d|
-    fielddata = {
-      Sentence_full: d[:a],
-      Sentence_audio: "[sound:#{d[:aaudio]}]"
-    }
-
-    if (!d[:q].nil?) then
-      extra = {
-        Sentence_with_blank: d[:q],
-        Sentence_with_blank_audio: "[sound:#{d[:qaudio]}]"
-      }
-      fielddata = fielddata.merge(extra)
-    end
-
-    {
-      deckName: deck,
-      # Assumption: model name
-      modelName: "Cloze_audio",
-      fields: fielddata,
-      options: { allowDuplicate: true },
-      tags: []
-    }
-  end
-
   return {
     action: "addNotes",
     version: 6,
     params: {
-      notes: noteData
+      notes: data.map { |d| d.json(deck) }
     }
   }
 end
@@ -176,17 +130,50 @@ raise "Missing file #{file}" unless File.exist?(file)
 lang = getLangCode(file)
 settings = getSettingsFor(lang)
 lines = cleanLines(File.read(file))
+clozes = lines.map { |s| AudioCloze.new(s) }
 
-clozes = getClozes(lines)
-puts clozes.inspect
+# List builder of text to synthesize.
+class FileList
+  def initialize(outdir)
+    @nextFilename = 0
+    @data = []
+    @outdir = outdir
+    @baseid = Time.now.strftime("%Y%m%d_%H%M%S")
+  end
 
-voicedata = getPollyData(clozes, settings[:voice])
-puts voicedata.inspect
+  def next_filename()
+    @nextFilename += 1
+    f = "#{@baseid}_#{@nextFilename}.mp3"
+    return File.join(@outdir, f)
+  end
+
+  def add_data(filename, text)
+    @data.push({ :f => filename, :t => text })
+  end
+
+  def data()
+    @data
+  end
+end
+
+flist = FileList.new(AUDIO_OUTFOLDER)
+clozes.reduce(flist) { |t, a| a.load_synth(t); t }
+voicedata = flist.data.map do |f|
+  {
+    text: f[:t],
+    voice_id: settings[:voice],
+    filename: f[:f]
+  }
+end
+postdata = createAnkiConnectPostBody(clozes, settings[:deck])
+
+# puts clozes.inspect
+# puts flist.inspect
+# puts voicedata.inspect
+# puts postdata.inspect
+
+# puts "\n\nQUITTING ..."
+# return
 
 Polly.bulk_create_mp3(voicedata)
-move_audio_files_to_Anki_folder()
-
-postdata = createAnkiConnectPostBody(clozes, settings[:deck])
 post_notes_to_AnkiConnect(postdata)
-
-# puts "DISABLED POLLY"
