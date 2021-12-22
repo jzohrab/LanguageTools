@@ -62,31 +62,30 @@ class TestAudioCloze < Test::Unit::TestCase
     [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
     assert_equal('1: hi; 2: b.  hi ___; 3: hi a', tp.data())
 
-    expected_ac1 = {
+    base = {
       deckName: 'deck',
       modelName: "Cloze_audio",
-      fields: {
-        Sentence_full: 'hi',
-        Sentence_audio: '[sound:1]'
-      },
       options: { allowDuplicate: true },
       tags: []
     }
-    assert_equal(expected_ac1, ac1.json('deck'), 'ac1')
+
+    expected_ac1 = {
+      fields: {
+        Sentence_full: 'hi',
+        Sentence_audio: '[sound:1]'
+      }
+    }
+    assert_equal(base.merge(expected_ac1), ac1.json('deck'), 'ac1')
 
     expected_ac2 = {
-      deckName: 'deck',
-      modelName: "Cloze_audio",
       fields: {
         Sentence_full: 'b.  hi ___',
         Sentence_audio: '[sound:2]',
         Sentence_with_blank: 'hi a',
         Sentence_with_blank_audio: '[sound:3]'
-      },
-      options: { allowDuplicate: true },
-      tags: []
+      }
     }
-    assert_equal(expected_ac2, ac2.json('deck'), 'ac2')
+    assert_equal(base.merge(expected_ac2), ac2.json('deck'), 'ac2')
 
   end
   
