@@ -9,7 +9,7 @@ class AudioCloze
     @question = AudioClozeHelpers.get_question(text)
     @answer = AudioClozeHelpers.get_answer(text)
     if (@answer == @question) then
-      @answer = nil
+      @question = nil
     end
   end
 
@@ -40,14 +40,14 @@ class AudioCloze
   def json(deck)
 
     fielddata = {
-      Sentence_full: @question,
-      Sentence_audio: "[sound:#{@question_file}]"
+      Sentence_full: @answer,
+      Sentence_audio: "[sound:#{@answer_file}]"
     }
 
-    if (@answer) then
+    if (@question) then
       extra = {
-        Sentence_with_blank: @answer,
-        Sentence_with_blank_audio: "[sound:#{@answer_file}]"
+        Sentence_with_blank: @question,
+        Sentence_with_blank_audio: "[sound:#{@question_file}]"
       }
       fielddata = fielddata.merge(extra)
     end

@@ -16,8 +16,8 @@ class TestAudioCloze < Test::Unit::TestCase
   def test_constructor_no_cloze
     # Sanity check only
     ac = AudioCloze.new("hi")
-    assert_equal('hi', ac.question, 'question')
-    assert_true(ac.answer.nil?, "nil answer but got #{ac.answer}")
+    assert_equal('hi', ac.answer, 'answer')
+    assert_true(ac.question.nil?, "nil question but got #{ac.question}")
   end
 
 
@@ -79,10 +79,10 @@ class TestAudioCloze < Test::Unit::TestCase
 
     expected_ac2 = {
       fields: {
-        Sentence_full: 'b.  hi ___',
-        Sentence_audio: '[sound:2]',
-        Sentence_with_blank: 'hi a',
-        Sentence_with_blank_audio: '[sound:3]'
+        Sentence_full: 'hi a',
+        Sentence_audio: '[sound:3]',
+        Sentence_with_blank: 'b.  hi ___',
+        Sentence_with_blank_audio: '[sound:2]',
       }
     }
     assert_equal(base.merge(expected_ac2), ac2.json('deck'), 'ac2')
