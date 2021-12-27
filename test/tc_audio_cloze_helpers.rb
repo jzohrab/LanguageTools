@@ -33,4 +33,12 @@ class TestAudioClozeHelpers < Test::Unit::TestCase
     check_a("aI *check ßäüö|h1* here.", "aI check ßäüö here.")
   end
 
+  # Sometimes it's good to 'fake' cloze something ...
+  def test_empty_cloze()
+    check_q('X prefieren ** caminar.', 'X prefieren ___ caminar.')
+    check_a('X prefieren ** caminar.', 'X prefieren caminar.')
+
+    check_q('X prefieren *|hi* caminar.', 'hi.  X prefieren ___ caminar.')
+    check_a('X prefieren *|hi* caminar.', 'X prefieren caminar.')
+  end
 end
