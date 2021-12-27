@@ -6,6 +6,8 @@
 #
 #   ruby [thisfile].rb cloze.txt
 #
+# Can add 'TEST' environment variable to test-gen a file, not actually post anything:
+#
 
 
 require 'date'
@@ -124,9 +126,6 @@ clozes = cleanLines(File.read(file)).map { |s| AudioCloze.new(s) }
 flist = FileList.new(AUDIO_OUTFOLDER)
 clozes.reduce(flist) { |t, a| a.load_synth(t); t }
 
-# puts "\n\nQUITTING ..."
-# return
-
 voicedata = flist.data.map do |f|
   {
     text: f[:t],
@@ -134,7 +133,17 @@ voicedata = flist.data.map do |f|
     filename: f[:f]
   }
 end
-Polly.bulk_create_mp3(voicedata)
 
 postdata = createAnkiConnectPostBody(clozes, settings[:deck])
+
+if !ENV['TEST'].nil? then
+  puts "\nData to post:"
+  puts JSON.pretty_generate(postdata)
+  puts "\nVoice cards to generate:"
+  puts JSON.pretty_generate(voicedata)
+  puts "\n\nQUITTING."
+  return
+end
+
+Polly.bulk_create_mp3(voicedata)
 post_notes_to_AnkiConnect(postdata)
