@@ -36,18 +36,23 @@ class AudioCloze
     @answer_file = load_text(t, @answer)
   end
 
+  def sound_file(f)
+    parts = File.split(f)
+    "[sound:#{parts[-1]}]"
+  end
+
   # Return json rep for insert into anki via ankiconnect.
   def json(deck)
 
     fielddata = {
       Sentence_full: @answer,
-      Sentence_audio: "[sound:#{@answer_file}]"
+      Sentence_audio: sound_file(@answer_file)
     }
 
     if (@question) then
       extra = {
         Sentence_with_blank: @question,
-        Sentence_with_blank_audio: "[sound:#{@question_file}]"
+        Sentence_with_blank_audio: sound_file(@question_file)
       }
       fielddata = fielddata.merge(extra)
     end

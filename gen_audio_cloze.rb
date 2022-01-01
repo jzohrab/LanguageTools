@@ -93,7 +93,9 @@ class FileList
   def next_filename()
     @nextFilename += 1
     f = "#{@baseid}_#{@nextFilename}.mp3"
-    return File.join(@outdir, f)
+    ret = File.join(@outdir, f)
+    # puts "Got file: #{ret}"
+    return ret
   end
 
   def add_data(filename, text)
@@ -112,9 +114,6 @@ end
 # Assumption: folder name
 MEDIA_FOLDER = '/Users/jeff/Library/Application Support/Anki2/User 1/collection.media/'
 
-AUDIO_OUTFOLDER = File.join(__dir__, 'audio')
-Dir.mkdir(audio_outfolder) unless Dir.exist?(AUDIO_OUTFOLDER)
-
 file = ARGV[0]
 raise "Missing file name" if file.nil?
 raise "Missing file #{file}" unless File.exist?(file)
@@ -123,7 +122,7 @@ lang = getLangCode(file)
 settings = getSettingsFor(lang)
 clozes = cleanLines(File.read(file)).map { |s| AudioCloze.new(s) }
 
-flist = FileList.new(AUDIO_OUTFOLDER)
+flist = FileList.new(MEDIA_FOLDER)
 clozes.reduce(flist) { |t, a| a.load_synth(t); t }
 
 voicedata = flist.data.map do |f|

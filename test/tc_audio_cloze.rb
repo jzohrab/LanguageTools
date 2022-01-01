@@ -31,7 +31,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
     def next_filename()
       @nextFilename += 1
-      @nextFilename
+      File.join('rootdir', @nextFilename.to_s)
     end
 
     def add_data(filename, text)
@@ -50,7 +50,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
     tp = TestPolly.new()
     [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
-    assert_equal('1: hi; 2: b.  hi ___; 3: hi a', tp.data())
+    assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
   end
 
 
@@ -60,7 +60,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
     tp = TestPolly.new()
     [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
-    assert_equal('1: hi; 2: b.  hi ___; 3: hi a', tp.data())
+    assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
 
     base = {
       deckName: 'deck',
