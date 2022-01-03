@@ -14,6 +14,8 @@ require 'date'
 require 'net/http'
 require 'json'
 require_relative './lib/audio_cloze'
+require_relative './lib/audio_q_a'
+require_relative './lib/audio_exposure'
 require_relative './lib/Polly'
 require_relative './lib/AudioClozeHelpers'
 
@@ -55,7 +57,17 @@ end
 
 def get_cards(file)
   lines = cleanLines(File.read(file))
-  cards = lines.map { |s| AudioCloze.new(s) }
+  cards = lines.map do |s|
+    c = nil
+    if AudioCloze.possible?(s) then
+      c = AudioCloze.new(s)
+    elsif AudioQA.possible?(s) then
+      c = AudioQA.new(s)
+    else
+      c = AudioExposure.new(s)
+    end
+    c
+  end
   return cards
 end
 
