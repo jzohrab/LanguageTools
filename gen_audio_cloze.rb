@@ -53,6 +53,12 @@ def cleanLines(s)
 end
 
 
+def get_cards(file)
+  lines = cleanLines(File.read(file))
+  cards = lines.map { |s| AudioCloze.new(s) }
+  return cards
+end
+
 def createAnkiConnectPostBody(data, deck)
   return {
     action: "addNotes",
@@ -120,7 +126,7 @@ raise "Missing file #{file}" unless File.exist?(file)
 
 lang = getLangCode(file)
 settings = getSettingsFor(lang)
-clozes = cleanLines(File.read(file)).map { |s| AudioCloze.new(s) }
+clozes = get_cards(file)
 
 flist = FileList.new(MEDIA_FOLDER)
 clozes.reduce(flist) { |t, a| a.load_synth(t); t }
