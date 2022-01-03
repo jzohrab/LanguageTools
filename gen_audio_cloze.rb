@@ -126,10 +126,10 @@ raise "Missing file #{file}" unless File.exist?(file)
 
 lang = getLangCode(file)
 settings = getSettingsFor(lang)
-clozes = get_cards(file)
+cards = get_cards(file)
 
 flist = FileList.new(MEDIA_FOLDER)
-clozes.reduce(flist) { |t, a| a.load_synth(t); t }
+cards.reduce(flist) { |t, a| a.load_synth(t); t }
 
 voicedata = flist.data.map do |f|
   {
@@ -139,7 +139,7 @@ voicedata = flist.data.map do |f|
   }
 end
 
-postdata = createAnkiConnectPostBody(clozes, settings[:deck])
+postdata = createAnkiConnectPostBody(cards, settings[:deck])
 
 if !ENV['TEST'].nil? then
   puts "\nData to post:"
