@@ -40,5 +40,8 @@ class TestAudioClozeHelpers < Test::Unit::TestCase
 
     check_q('X prefieren *|hi* caminar.', 'hi.  X prefieren ___ caminar.')
     check_a('X prefieren *|hi* caminar.', 'X prefieren caminar.')
+
+    check_q('X prefieren *|* caminar.', 'X prefieren ___ caminar.')
+    check_a('X prefieren *|* caminar.', 'X prefieren caminar.')
   end
 end

@@ -14,6 +14,13 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_equal('hi a', ac.back, 'answer')
   end
 
+  def test_constructor_empty_hint
+    # Sanity check only
+    ac = AudioCloze.new("hi *a|*")
+    assert_equal('hi ___', ac.front, 'question, empty hint')
+    assert_equal('hi a', ac.back, 'answer')
+  end
+
   def test_constructor_no_cloze
     # Sanity check only
     ac = AudioCloze.new("hi")

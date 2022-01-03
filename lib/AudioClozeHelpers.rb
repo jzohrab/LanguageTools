@@ -32,7 +32,7 @@ class AudioClozeHelpers
       question = question.gsub(m[0], blanks)
     end
 
-    hints = ms.map { |m| m[:hint] }.select { |h| !h.nil? }
+    hints = ms.map { |m| m[:hint] }.select { |h| !h.nil? }.select { |h| h != '' }
     if (hints.size > 0) then
       question = "#{hints.join(', ')}.  #{question}"
     end
