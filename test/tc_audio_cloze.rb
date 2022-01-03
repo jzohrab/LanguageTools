@@ -9,15 +9,15 @@ class TestAudioCloze < Test::Unit::TestCase
   def test_constructor
     # Sanity check only
     ac = AudioCloze.new("hi *a|b*")
-    assert_equal('b.  hi ___', ac.question, 'question')
-    assert_equal('hi a', ac.answer, 'answer')
+    assert_equal('b.  hi ___', ac.front, 'question')
+    assert_equal('hi a', ac.back, 'answer')
   end
 
   def test_constructor_no_cloze
     # Sanity check only
     ac = AudioCloze.new("hi")
-    assert_equal('hi', ac.answer, 'answer')
-    assert_true(ac.question.nil?, "nil question but got #{ac.question}")
+    assert_equal('hi', ac.back, 'answer')
+    assert_true(ac.front.nil?, "nil question but got #{ac.front}")
   end
 
 
@@ -64,25 +64,25 @@ class TestAudioCloze < Test::Unit::TestCase
 
     base = {
       deckName: 'deck',
-      modelName: "Cloze_audio",
+      modelName: "Audio_cloze",
       options: { allowDuplicate: true },
       tags: []
     }
 
     expected_ac1 = {
       fields: {
-        Sentence_full: 'hi',
-        Sentence_audio: '[sound:1]'
+        Back: 'hi',
+        Back_audio: '[sound:1]'
       }
     }
     assert_equal(base.merge(expected_ac1), ac1.json('deck'), 'ac1')
 
     expected_ac2 = {
       fields: {
-        Sentence_full: 'hi a',
-        Sentence_audio: '[sound:3]',
-        Sentence_with_blank: 'b.  hi ___',
-        Sentence_with_blank_audio: '[sound:2]',
+        Back: 'hi a',
+        Back_audio: '[sound:3]',
+        Front: 'b.  hi ___',
+        Front_audio: '[sound:2]',
       }
     }
     assert_equal(base.merge(expected_ac2), ac2.json('deck'), 'ac2')

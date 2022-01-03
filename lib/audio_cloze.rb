@@ -6,19 +6,19 @@ class AudioCloze
 
   def initialize(text)
     @text = text
-    @question = AudioClozeHelpers.get_question(text)
-    @answer = AudioClozeHelpers.get_answer(text)
-    if (@answer == @question) then
-      @question = nil
+    @front = AudioClozeHelpers.get_question(text)
+    @back = AudioClozeHelpers.get_answer(text)
+    if (@back == @front) then
+      @front = nil
     end
   end
 
-  def question()
-    @question
+  def front()
+    @front
   end
 
-  def answer()
-    @answer
+  def back()
+    @back
   end
 
   # Build list of things to synthesize.
@@ -32,8 +32,8 @@ class AudioCloze
       return f
     end
 
-    @question_file = load_text(t, @question)
-    @answer_file = load_text(t, @answer)
+    @front_file = load_text(t, @front)
+    @back_file = load_text(t, @back)
   end
 
   def sound_file(f)
@@ -45,14 +45,14 @@ class AudioCloze
   def json(deck)
 
     fielddata = {
-      Sentence_full: @answer,
-      Sentence_audio: sound_file(@answer_file)
+      Back: @back,
+      Back_audio: sound_file(@back_file)
     }
 
-    if (@question) then
+    if (@front) then
       extra = {
-        Sentence_with_blank: @question,
-        Sentence_with_blank_audio: sound_file(@question_file)
+        Front: @front,
+        Front_audio: sound_file(@front_file)
       }
       fielddata = fielddata.merge(extra)
     end
@@ -60,7 +60,7 @@ class AudioCloze
     {
       deckName: deck,
       # Assumption: model name
-      modelName: "Cloze_audio",
+      modelName: "Audio_cloze",
       fields: fielddata,
       options: { allowDuplicate: true },
       tags: []

@@ -1,5 +1,6 @@
 # esp
 
 Tengo un gato.
-*Tienes|Tener* un gato.
+*Tengo|Tener, yo* un gato.
 Los Arriaga prefieren *|* pasar la Nochebuena en casa.
+Tengo una pregunta.|Tengo la respuesta.
