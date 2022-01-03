@@ -27,9 +27,9 @@ class AudioClozeHelpers
       # for now I'll just split on spaces and assume that each
       # element is a word.
       # blanks = a.gsub(/\w+/, '___')
-      blanks = a.gsub(/\s+/, ' ').split(' ').
-                 map { |s| '___' }.join(' ')
-      question = question.gsub(m[0], blanks)
+      # blanks = a.gsub(/\s+/, ' ').split(' ').
+      #            map { |s| '___' }.join(' ')
+      question = question.gsub(m[0], '___')
     end
 
     hints = ms.map { |m| m[:hint] }.select { |h| !h.nil? }.select { |h| h != '' }
