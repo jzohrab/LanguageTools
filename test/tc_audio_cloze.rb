@@ -31,7 +31,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
   # AudioCloze takes a voice synth object, and asks it to build the
   # list of things to synthesize.
-  class TestPolly
+  class FakePolly
     def initialize()
       @nextFilename = 0
       @data = []
@@ -56,7 +56,7 @@ class TestAudioCloze < Test::Unit::TestCase
     ac1 = AudioCloze.new("hi")
     ac2 = AudioCloze.new("hi *a|b*")
 
-    tp = TestPolly.new()
+    tp = FakePolly.new()
     [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
     assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
   end
@@ -66,7 +66,7 @@ class TestAudioCloze < Test::Unit::TestCase
     ac1 = AudioCloze.new("hi")
     ac2 = AudioCloze.new("hi *a|b*")
 
-    tp = TestPolly.new()
+    tp = FakePolly.new()
     [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
     assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
 
