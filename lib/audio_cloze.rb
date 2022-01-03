@@ -4,6 +4,14 @@ require_relative './AudioClozeHelpers'
 
 class AudioCloze
 
+  # True if we can make an AudioCloze from the text.
+  def self.possible?(text)
+    return false unless !text.nil?
+    q = AudioClozeHelpers.get_question(text)
+    a = AudioClozeHelpers.get_answer(text)
+    return (q != a)
+  end
+  
   def initialize(text)
     @text = text
     @front = AudioClozeHelpers.get_question(text)

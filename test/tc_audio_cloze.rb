@@ -20,6 +20,14 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_true(ac.front.nil?, "nil question but got #{ac.front}")
   end
 
+  def test_possible
+    assert_true(AudioCloze.possible?('hi *there*'), 'single cloze')
+    assert_true(AudioCloze.possible?('hi *there|hint*'), 'single cloze with hint')
+    assert_true(AudioCloze.possible?('hi **'), 'empty cloze')
+    assert_false(AudioCloze.possible?('hi'), 'No cloze')
+    assert_false(AudioCloze.possible?(''), 'no sentence')
+    assert_false(AudioCloze.possible?(nil), 'nil sentence')
+  end
 
   # AudioCloze takes a voice synth object, and asks it to build the
   # list of things to synthesize.
