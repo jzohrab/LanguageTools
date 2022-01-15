@@ -21,11 +21,9 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_equal('hi a', ac.back, 'answer')
   end
 
-  def test_constructor_no_cloze
+  def test_constructor_no_cloze_throws
     # Sanity check only
-    ac = AudioCloze.new("hi")
-    assert_equal('hi', ac.back, 'answer')
-    assert_true(ac.front.nil?, "nil question but got #{ac.front}")
+    assert_raise(RuntimeError) { AudioCloze.new("hi") }
   end
 
   def test_possible
@@ -39,22 +37,20 @@ class TestAudioCloze < Test::Unit::TestCase
 
 
   def test_load_synth
-    ac1 = AudioCloze.new("hi")
     ac2 = AudioCloze.new("hi *a|b*")
 
     tp = FakePolly.new()
-    [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
-    assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
+    [ ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
+    assert_equal('rootdir/1: b.  hi ___; rootdir/2: hi a', tp.data())
   end
 
 
   def test_get_json
-    ac1 = AudioCloze.new("hi")
     ac2 = AudioCloze.new("hi *a|b*")
 
     tp = FakePolly.new()
-    [ ac1, ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
-    assert_equal('rootdir/1: hi; rootdir/2: b.  hi ___; rootdir/3: hi a', tp.data())
+    [ ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
+    assert_equal('rootdir/1: b.  hi ___; rootdir/2: hi a', tp.data())
 
     base = {
       deckName: 'deck',
@@ -63,20 +59,12 @@ class TestAudioCloze < Test::Unit::TestCase
       tags: []
     }
 
-    expected_ac1 = {
-      fields: {
-        Back: 'hi',
-        Back_audio: '[sound:1]'
-      }
-    }
-    assert_equal(base.merge(expected_ac1), ac1.json('deck'), 'ac1')
-
     expected_ac2 = {
       fields: {
         Back: 'hi a',
-        Back_audio: '[sound:3]',
+        Back_audio: '[sound:2]',
         Front: 'b.  hi ___',
-        Front_audio: '[sound:2]',
+        Front_audio: '[sound:1]',
       }
     }
     assert_equal(base.merge(expected_ac2), ac2.json('deck'), 'ac2')

@@ -16,9 +16,7 @@ class AudioCloze
     @text = text
     @front = AudioClozeHelpers.get_question(text)
     @back = AudioClozeHelpers.get_answer(text)
-    if (@back == @front) then
-      @front = nil
-    end
+    raise "Same front and back" if (@front == @back)
   end
 
   def front()
@@ -34,7 +32,6 @@ class AudioCloze
 
     # Add item to list, and return new filename.
     def load_text(t, text)
-      return nil if text.nil?
       f = t.next_filename()
       t.add_data(f, text)
       return f
@@ -53,17 +50,11 @@ class AudioCloze
   def json(deck)
 
     fielddata = {
+      Front: @front,
+      Front_audio: sound_file(@front_file),
       Back: @back,
       Back_audio: sound_file(@back_file)
     }
-
-    if (@front) then
-      extra = {
-        Front: @front,
-        Front_audio: sound_file(@front_file)
-      }
-      fielddata = fielddata.merge(extra)
-    end
 
     {
       deckName: deck,
