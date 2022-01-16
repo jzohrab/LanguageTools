@@ -5,3 +5,6 @@ text/
 text-done/
 audio/
 cards/
+
+# User-specific settings file
+settings.yml
