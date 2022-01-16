@@ -1,41 +1,44 @@
-- [Generate Anki audio-only cards](#generate-anki-audio-only-cards)
-  * [Assumptions / Pre-reqs](#assumptions---pre-reqs)
-  * [Text file](#text-file)
-  * [Sample](#sample-1)
+# Language tools
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+A set (currently, only one script!) of tools to help language study.
 
-
-# Generate Anki audio-only cards
-
-_Note: this code is hacked together for my personal use, I haven't generalized it/made it configurable.  See the Assumptions below._
-
-## Assumptions / Pre-reqs
+## Pre-requisites
 
 * have Anki and AnkiConnect
-* have an AWS account setup with appropriate keys
+* have an AWS account setup with appropriate keys (e.g. on my Mac, the keys are in `~/.aws/credentials`)
+* Have Ruby installed
+
+## Setup
+
 * `gem install aws-sdk`
-* various `#Assumption` comments in `gen_audio_cards.rb`
+* Copy the file `settings.yml.example` to `settings.yml`, and edit it to match your setup and languages.
 
-## Text file
+## `gen_cards.rb`: Generate Anki audio cards
 
-In `text` folder, put a file with L2 sentences on the top, a separator `---`, and L1 sentences on the bottom.
+This script creates different types of notes:
 
-Run `ruby gen_audio_cards.rb`
+* "exposure" notes, for simply playing sentences
+* "Question/answer" notes, similar to basic notes but with audio
+* "Audio Cloze" notes, like regular cloze but with audio
+
+See `samples/samples.txt` for examples.
+
+### Usage
+
+In the `text` folder, create a text file with lines that you want to turn into Anki audio cards.
+
+Run `ruby gen_cards.rb ./path/to/file.txt`
 
 The above will:
 
-* generate L1 and L2 mp3 files using AWS Polly
-* generate card data combining the L1 and L2 translations with their sound files
+* generate mp3 files using AWS Polly
+* generate note data combining the sentences with the sound files
 * post the cards to Anki using AnkiConnect
-* move the processed file from `text` to `text-done`
 
-## Sample
+### Sample
 
-Copy the file in `samples` to the appropriate `text` folder (in this case, it's Spanish, so `text/esp`).
-
-Run the program:
+Run the sample file, but don't actually generate audio files or post to AnkiConnect:
 
 ```
-ruby gen_audio_cards.rb
+$ TEST=yes ruby gen_cards.rb samples/samples.txt
 ```
