@@ -1,0 +1,28 @@
+# A sample setting file.
+#
+# Copy this file to settings.yml,
+# and edit it to your correct settings.
+
+# The port Ankiconnect listens to on your machine.
+ankiconnect: http://localhost:8765/
+
+# Your Anki media path.
+ankimediafolder: '/Users/jeff/Library/Application Support/Anki2/User 1/collection.media/'
+
+languages:
+
+  # The first line of your input file should match
+  # one of the codes you list here.  These codes are
+  # up to you, they're not "official" codes
+  esp:
+
+    # The name of your Anki deck where the data should be imported.
+    deck: Spanish::01_Spanish_Vocab
+
+    # The Amazon Polly voice you're using for generation.
+    # Ref https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+    voice: Conchita  # Luisa, Enrique
+
+  deu:
+    deck: German::01_German_Vocab
+    voice: Vicki  # Marlene, Hans
