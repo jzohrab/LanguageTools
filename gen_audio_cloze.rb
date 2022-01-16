@@ -16,6 +16,7 @@ require 'json'
 require_relative './lib/audio_cloze'
 require_relative './lib/audio_q_a'
 require_relative './lib/audio_exposure'
+require_relative './lib/settings'
 require_relative './lib/Polly'
 require_relative './lib/AudioClozeHelpers'
 
@@ -26,25 +27,6 @@ def getLangCode(fname)
   return firstline.gsub(/ /, '').gsub('#', '')
 end
 
-
-def getSettingsFor(lang)
-  case lang
-  when 'esp' then
-    return {
-      # Assumption
-      deck: 'Spanish::01_Spanish_Vocab',
-      voice: 'Conchita'  # Luisa, Enrique
-    }
-  when 'deu' then
-    return {
-      # Assumption
-      deck: 'German::01_German_Vocab',
-      voice: 'Vicki'  # Marlene, Hans
-    }
-  else
-    raise "First line of file should contain lang code esp or deu, got #{lang}"
-  end
-end
 
 # Remove cruft from text file lines.
 def cleanLines(s)
@@ -129,15 +111,20 @@ end
 ##########################################
 # Main
 
+settings_file = File.join(File.dirname(__FILE__), 'settings.yml')
+settings = Settings.new(settings_file)
+
 # Assumption: folder name
-MEDIA_FOLDER = '/Users/jeff/Library/Application Support/Anki2/User 1/collection.media/'
+MEDIA_FOLDER = settings.media_file
 
 file = ARGV[0]
 raise "Missing file name" if file.nil?
 raise "Missing file #{file}" unless File.exist?(file)
 
 lang = getLangCode(file)
-settings = getSettingsFor(lang)
+deck = settings.deck(lang),
+voice = settings.voice(lang)
+
 cards = get_cards(file)
 
 flist = FileList.new(MEDIA_FOLDER)
@@ -146,12 +133,12 @@ cards.reduce(flist) { |t, a| a.load_synth(t); t }
 voicedata = flist.data.map do |f|
   {
     text: f[:t],
-    voice_id: settings[:voice],
+    voice_id: voice,
     filename: f[:f]
   }
 end
 
-postdata = createAnkiConnectPostBody(cards, settings[:deck])
+postdata = createAnkiConnectPostBody(cards, deck)
 
 if !ENV['TEST'].nil? then
   puts "\nData to post:"
