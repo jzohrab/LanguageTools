@@ -1,6 +1,47 @@
 # esp
 
-Tengo un gato.
-*Tengo|Tener, yo* un gato.
-Los Arriaga prefieren *|* pasar la Nochebuena en casa.
+# The 'esp' in the first line of the card indicates that this file contains Spanish.
+
+# (Lines starting with # are comments.)
+
+# Each line in the file becomes a new note.
+# The note type created depends on the line content.
+
+
+Tengo un libro.
+#
+# A simple sentence with no annotations.
+# This becomes an AudioExposure note:
+# - front: "Tengo un libro"
+
+
 Tengo una pregunta.|Tengo la respuesta.
+#
+# The line is of the form "question|answer".
+# This becomes an AudioQA note:
+# - front: "Tengo una pregunta"
+# - back:  "Tengo la respuesta."
+
+
+Yo *tengo* un perro.
+#
+# The line contains a cloze.
+# This becomes an AudioCloze note:
+# - front: "Yo ___ un perro."
+# - back:  "Yo tengo un perro."
+
+
+*Tengo|Tener, yo* un gato.
+#
+# The line contains a cloze with a hint.
+# This becomes an AudioCloze note:
+# - front: "Tener, yo. ____ un gato.
+# - back:  "Tengo un gato."
+
+
+Ellos prefieren *|* quedarse en casa.
+#
+# The line contains a cloze with an empty hint.
+# This becomes an AudioCloze note:
+# - front: "Ellos prefieren ___ quedarse en casa."
+# - back:  "Ellos prefieren quedarse en casa."
