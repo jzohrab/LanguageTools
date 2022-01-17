@@ -75,11 +75,11 @@ For any interesting sentence -- interesting due to new vocab, grammatical concep
 Examples:
 
 * Verb clozes
-** conjugations:  "Yo tengo un gato" becomes "Tener.  Yo <shhhhh> un gato".
-** verb articles: "Ella cumplió con sus deberes" becomes "Ella cumplió <shhhh> sus deberes".
+   * conjugations:  "Yo tengo un gato" becomes "Tener.  Yo <shhhhh> un gato".
+   * verb articles: "Ella cumplió con sus deberes" becomes "Ella cumplió <shhhh> sus deberes".
 * Some grammar exercises become Q&A notes.
-**front: "Ella le dió la cosa a él.  Ahora con pronombres:", back:  "Ella se la dió."
-** front: "Supongo que están las seis.  Otra manera de decir esto:", back: "Serán las seis."
+   * front: "Ella le dió la cosa a él.  Ahora con pronombres:", back:  "Ella se la dió."
+   * front: "Supongo que están las seis.  Otra manera de decir esto:", back: "Serán las seis."
 
 When I can't think of what to do with a sentence, I'll just make an exposure note, so the sentence gets played.  e.g. for new vocab, this is usually good enough at first.
 
