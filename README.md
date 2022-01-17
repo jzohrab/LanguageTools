@@ -38,8 +38,8 @@ There are a few different note types, which have different cards.
 | Sample input line | Yields note | Front | Back |
 | ----------------- | ----------- | ----- | ---- |
 | `Yo tengo un gato.` | Exposure | Yo tengo un gato. | - |
-| `¿Qué tienes?|Un gato.` | Question/Answer | ¿Qué tienes? | Un gato. |
-| `Yo *tengo|tener* un gato` | Cloze | Yo <shhhh> un gato. | Yo tengo un gato. |
+| `¿Qué tienes?\|Un gato.` | Question/Answer | ¿Qué tienes? | Un gato. |
+| `Yo *tengo\|tener* un gato` | Cloze | Yo <shhhh> un gato. | Yo tengo un gato. |
 
 (See [./samples/samples.txt](./samples/samples.txt) for examples.)
 
