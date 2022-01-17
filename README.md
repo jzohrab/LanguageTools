@@ -36,11 +36,12 @@ Back: Yo tengo un gato
 There are a few different note types, which have different cards.
 
 | Sample input line | Yields note | Front | Back |
+| ----------------- | ----------- | ----- | ---- |
 | Yo tengo un gato. | Exposure | Yo tengo un gato. | - |
 | ¿Qué tienes?|Un gato. | Question/Answer | ¿Qué tienes? | Un gato. |
 | Yo *tengo|tener* un gato | Cloze | Yo <shhhh> un gato. | Yo tengo un gato. |
 
-(See `samples/samples.txt` for examples.)
+(See [./samples/samples.txt](./samples/samples.txt) for examples.)
 
 * "Exposure" notes: The card for this simply plays the sentence.  E.g., "Yo tengo un gato."  There's no real question/answer here, it's just audio for me to listen to the sentence and practice shadowing it if I want to.
 
