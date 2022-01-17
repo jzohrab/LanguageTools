@@ -44,10 +44,8 @@ There are a few different note types, which have different cards.
 (See [./samples/samples.txt](./samples/samples.txt) for examples.)
 
 * "Exposure" notes: The card for this simply plays the sentence.  E.g., "Yo tengo un gato."  There's no real question/answer here, it's just audio for me to listen to the sentence and practice shadowing it if I want to.
-
 * "Question/answer" notes: This is identical to Anki's "basic note", but with audio.
-
-"Audio Cloze" notes: Like regular cloze but with audio.
+* "Audio Cloze" notes: Like regular cloze but with audio.
 
 #### "Exposure cards"
 
