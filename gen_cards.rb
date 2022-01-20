@@ -122,7 +122,7 @@ raise "Missing file name" if file.nil?
 raise "Missing file #{file}" unless File.exist?(file)
 
 lang = getLangCode(file)
-deck = settings.deck(lang),
+deck = settings.deck(lang)
 voice = settings.voice(lang)
 
 cards = get_cards(file)
