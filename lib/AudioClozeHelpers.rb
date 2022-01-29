@@ -7,7 +7,7 @@ class AudioClozeHelpers
     # part, in array of arrays.  e.g.
     # "F *q1|h1*, *q2|h2* *q3* ok." =>
     # [["q1", "h1"], ["q2", "h2"], ["q3", nil]]
-    clozeRe = /\*(?<answer>.*?)(?:\|(?<hint>.*?))?\*/
+    clozeRe = /\[(?<answer>.*?)(?:\|(?<hint>.*?))?\]/
     if (text !~ clozeRe)
       return text
     end
@@ -41,7 +41,7 @@ class AudioClozeHelpers
   end
   
   def self.get_answer(text)
-    clozeRe = /\*(.*?)(\|.*?)?\*/
+    clozeRe = /\[(.*?)(\|.*?)?\]/
     if (text !~ clozeRe)
       return text
     end

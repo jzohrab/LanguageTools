@@ -23,7 +23,7 @@ Tengo una pregunta.|Tengo la respuesta.
 # - back:  "Tengo la respuesta."
 
 
-Yo *tengo* un perro.
+Yo [tengo] un perro.
 #
 # The line contains a cloze.
 # This becomes an AudioCloze note:
@@ -31,7 +31,7 @@ Yo *tengo* un perro.
 # - back:  "Yo tengo un perro."
 
 
-*Tengo|Tener, yo* un gato.
+[Tengo|Tener, yo] un gato.
 #
 # The line contains a cloze with a hint.
 # This becomes an AudioCloze note:
@@ -39,7 +39,7 @@ Yo *tengo* un perro.
 # - back:  "Tengo un gato."
 
 
-Ellos prefieren *|* quedarse en casa.
+Ellos prefieren [|] quedarse en casa.
 #
 # The line contains a cloze with an empty hint.
 # This becomes an AudioCloze note:

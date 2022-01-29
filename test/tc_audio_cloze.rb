@@ -9,14 +9,14 @@ class TestAudioCloze < Test::Unit::TestCase
 
   def test_constructor
     # Sanity check only
-    ac = AudioCloze.new("hi *a|b*")
+    ac = AudioCloze.new("hi [a|b]")
     assert_equal('b.  hi ___', ac.front, 'question')
     assert_equal('hi a', ac.back, 'answer')
   end
 
   def test_constructor_empty_hint
     # Sanity check only
-    ac = AudioCloze.new("hi *a|*")
+    ac = AudioCloze.new("hi [a|]")
     assert_equal('hi ___', ac.front, 'question, empty hint')
     assert_equal('hi a', ac.back, 'answer')
   end
@@ -27,9 +27,9 @@ class TestAudioCloze < Test::Unit::TestCase
   end
 
   def test_possible
-    assert_true(AudioCloze.possible?('hi *there*'), 'single cloze')
-    assert_true(AudioCloze.possible?('hi *there|hint*'), 'single cloze with hint')
-    assert_true(AudioCloze.possible?('hi **'), 'empty cloze')
+    assert_true(AudioCloze.possible?('hi [there]'), 'single cloze')
+    assert_true(AudioCloze.possible?('hi [there|hint]'), 'single cloze with hint')
+    assert_true(AudioCloze.possible?('hi []'), 'empty cloze')
     assert_false(AudioCloze.possible?('hi'), 'No cloze')
     assert_false(AudioCloze.possible?(''), 'no sentence')
     assert_false(AudioCloze.possible?(nil), 'nil sentence')
@@ -37,7 +37,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
 
   def test_load_synth
-    ac2 = AudioCloze.new("hi *a|b*")
+    ac2 = AudioCloze.new("hi [a|b]")
 
     tp = FakePolly.new()
     [ ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
@@ -46,7 +46,7 @@ class TestAudioCloze < Test::Unit::TestCase
 
 
   def test_get_json
-    ac2 = AudioCloze.new("hi *a|b*")
+    ac2 = AudioCloze.new("hi [a|b]")
 
     tp = FakePolly.new()
     [ ac2 ].reduce(tp) { |t, a| a.load_synth(t); t }
