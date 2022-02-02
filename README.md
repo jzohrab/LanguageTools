@@ -121,3 +121,9 @@ Run the sample file, but don't actually generate audio files or post to AnkiConn
 ```
 $ TEST=yes ruby gen_cards.rb samples/samples.txt
 ```
+
+### Usage shortcut
+
+If you just update the same text file, you can use a bash file to run card generation.
+
+E.g. I use a text file `./text/input.txt`, and generate cards with `./gen_cards.sh`.
