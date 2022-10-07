@@ -31,6 +31,27 @@ Would become the following "audio cloze card":
 Front: Tener.  Yo <shhhh> un gato.   _(generated audio replaces the clozed word with "shhhh")_
 Back: Yo tengo un gato
 
+### Troubleshooting
+
+#### Openssl issue on mac:
+
+e.g. with error:
+
+```
+in `require': dlopen(/Users/jeff/.rbenv/versions/2.4.1/lib/ruby/2.4.0/x86_64-darwin13/openssl.bundle, 9): Library not loaded: /usr/local/opt/openssl/lib/libssl.1.0.0.dylib (LoadError)
+  Referenced from: /Users/jeff/.rbenv/versions/2.4.1/lib/ruby/2.4.0/x86_64-darwin13/openssl.bundle
+  Reason: image not found - /Users/jeff/.rbenv/versions/2.4.1/lib/ruby/2.4.0/x86_64-darwin13/openssl.bundle
+```
+
+fixed it with:
+
+```
+brew install rbenv/tap/openssl@1.0
+ln -sfn /usr/local/Cellar/openssl@1.0/1.0.2t /usr/local/opt/openssl
+```
+
+Thanks to https://stackoverflow.com/questions/59006602/dyld-library-not-loaded-usr-local-opt-openssl-lib-libssl-1-0-0-dylib
+
 ### Note types and cards.
 
 There are a few different note types, which have different cards.
@@ -39,7 +60,7 @@ There are a few different note types, which have different cards.
 | ----------------- | ----------- | ----- | ---- |
 | `Yo tengo un gato.` | Exposure | Yo tengo un gato. | - |
 | `¿Qué tienes?\|Un gato.` | Question/Answer | ¿Qué tienes? | Un gato. |
-| `Yo [tengo\|tener] un gato` | Cloze | Yo _shhhh_ un gato. | Yo tengo un gato. |
+| `Yo [tengo\|tener] un gato` | Cloze | Tener.  Yo _shhhh_ un gato. | Yo tengo un gato. |
 
 (See [./samples/samples.txt](./samples/samples.txt) for examples.)
 
