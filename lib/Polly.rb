@@ -2,7 +2,7 @@
 # Simple wrapper for AWS polly and SDK
 # ref https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/polly-example-synthesize-speech.html
 
-require 'aws-sdk'
+require 'aws-sdk-polly'
 
 
 class Polly

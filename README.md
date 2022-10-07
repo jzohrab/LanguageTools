@@ -120,7 +120,7 @@ Then Anki takes care of the rest of the scheduling.
 
 #### Setup
 
-* `gem install aws-sdk`
+* `gem install aws-sdk-polly`   (much faster than the full `aws-sdk`)
 * Copy the file `settings.yml.example` to `settings.yml`, and edit it to match your setup and languages.
 
 ### Usage
