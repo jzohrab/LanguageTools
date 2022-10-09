@@ -18,16 +18,6 @@ class AudioClozeHelpers
 
     question = text
     ms.each do |m|
-      a = m[:answer]
-      a = 'placeholder' if a == ''
-      # Doing "a.gsub(/\w+/, '___')" to replace 'words' with
-      # underscores doesn't work for international char sets.
-      # There should be a way to solve this "properly", but
-      # for now I'll just split on spaces and assume that each
-      # element is a word.
-      # blanks = a.gsub(/\w+/, '___')
-      # blanks = a.gsub(/\s+/, ' ').split(' ').
-      #            map { |s| '___' }.join(' ')
       question = question.gsub(m[0], '___')
     end
 
