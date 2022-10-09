@@ -2,7 +2,7 @@
 
 class AudioClozeHelpers
 
-  def self.get_question(text)
+  def self.get_matches(text)
     # Below ugly re gets the question part, and the optional hint
     # part, in array of arrays.  e.g.
     # "F *q1|h1*, *q2|h2* *q3* ok." =>
@@ -12,8 +12,11 @@ class AudioClozeHelpers
     # :scan tip from
     # https://stackoverflow.com/questions/80357/
     #   how-to-match-all-occurrences-of-a-regex
-    ms = text.to_enum(:scan, clozeRe).map { Regexp.last_match }
+    return text.to_enum(:scan, clozeRe).map { Regexp.last_match }
+  end
 
+  def self.get_question(text)
+    ms = self.get_matches(text)
     return text if ms.length == 0
 
     question = text
