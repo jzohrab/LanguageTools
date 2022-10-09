@@ -8,14 +8,13 @@ class AudioClozeHelpers
     # "F *q1|h1*, *q2|h2* *q3* ok." =>
     # [["q1", "h1"], ["q2", "h2"], ["q3", nil]]
     clozeRe = /\[(?<answer>.*?)(?:\|(?<hint>.*?))?\]/
-    if (text !~ clozeRe)
-      return text
-    end
 
     # :scan tip from
     # https://stackoverflow.com/questions/80357/
     #   how-to-match-all-occurrences-of-a-regex
     ms = text.to_enum(:scan, clozeRe).map { Regexp.last_match }
+
+    return text if ms.length == 0
 
     question = text
     ms.each do |m|
