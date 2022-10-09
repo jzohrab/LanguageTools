@@ -37,9 +37,9 @@ class TestAudioClozeHelpers < Test::Unit::TestCase
     check_a("aI [check ßäüö|h1] here.", "aI check ßäüö here.")
   end
 
-  def TODO_test_hint_with_detail()
-    check_q("start [word|hint|detail] ok.", "hint. start ___ ok.")
-    check_a("start [word|hint|detail] ok.", "detail. start word ok.")
+  def test_hint_with_detail()
+    check_q("start [word|hint|detail] ok.", "hint.  start ___ ok.")
+    check_a("start [word|hint|detail] ok.", "detail.  start word ok.")
   end
 
   # Sometimes it's good to 'fake' cloze something ...

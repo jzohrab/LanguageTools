@@ -3,11 +3,11 @@
 class AudioClozeHelpers
 
   def self.get_matches(text)
-    # Below ugly re gets the question part, and the optional hint
-    # part, in array of arrays.  e.g.
-    # "F *q1|h1*, *q2|h2* *q3* ok." =>
-    # [["q1", "h1"], ["q2", "h2"], ["q3", nil]]
-    clozeRe = /\[(?<answer>.*?)(?:\|(?<hint>.*?))?\]/
+    # Ugly re gets the question part, optional hint, and optional details,
+    # as a dict
+    # "F [q1|h1|detail], [q2|h2] [q3] ok." =>
+    # [{answer:"q1", hint:"h1", details:"detail"}, ...]
+    clozeRe = /\[(?<answer>.*?)(?:\|(?<hint>.*?)(?:\|(?<details>.*?))?)?\]/
 
     # :scan tip from
     # https://stackoverflow.com/questions/80357/
@@ -41,10 +41,10 @@ class AudioClozeHelpers
       answer = answer.gsub(m[0], m[:answer]).gsub(/\s+/, ' ')
     end
 
-    # details = ms.map { |m| m[:details] }.select { |h| !h.nil? }.select { |h| h != '' }
-    # if (details.size > 0) then
-    #   answer = "#{details.join(', ')}.  #{answer}"
-    # end
+    details = ms.map { |m| m[:details] }.select { |h| !h.nil? }.select { |h| h != '' }
+    if (details.size > 0) then
+      answer = "#{details.join(', ')}.  #{answer}"
+    end
 
     return answer
   end

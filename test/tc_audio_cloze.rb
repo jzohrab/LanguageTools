@@ -14,11 +14,10 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_equal('hi a', ac.back, 'answer')
   end
 
-  def TODO_test_hint_with_extra_detail_to_be_included_in_answer
-    # Sanity check only
+  def test_hint_with_extra_detail_to_be_included_in_answer
     ac = AudioCloze.new("hi [word|hint|detail]")
     assert_equal('hint.  hi ___', ac.front, 'question')
-    assert_equal('detail. hi word', ac.back, 'answer')
+    assert_equal('detail.  hi word', ac.back, 'answer')
   end
 
   def test_constructor_empty_hint
