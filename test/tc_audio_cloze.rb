@@ -41,6 +41,14 @@ class TestAudioCloze < Test::Unit::TestCase
     assert_false(AudioCloze.possible?(nil), 'nil sentence')
   end
 
+  def test_verify_sample_only()
+    s = "Ayer, ella [sostuvo|tener una cosa de modo que no se caiga|sostener] un gato."
+    ac = AudioCloze.new(s)
+    front = "tener una cosa de modo que no se caiga.  Ayer, ella ___ un gato."
+    back = "sostener.  Ayer, ella sostuvo un gato."
+    assert_equal(front, ac.front, 'front')
+    assert_equal(back, ac.back, 'back')
+  end
 
   def test_load_synth
     ac2 = AudioCloze.new("hi [a|b]")

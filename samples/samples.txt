@@ -39,6 +39,14 @@ Yo [tengo] un perro.
 # - back:  "Tengo un gato."
 
 
+Ayer, ella [sostuvo|tener una cosa de modo que no se caiga|sostener] un gato.
+#
+# The line contains a cloze with a hint, and some extra detail which is included in the answer.
+# This becomes an AudioCloze note:
+# - front: "tener una cosa de modo que no se caiga.  Ayer, ella ___ un gato."
+# - back:  "sostener.  Ayer, ella sostuvo un gato."
+
+
 Ellos prefieren [|] quedarse en casa.
 #
 # The line contains a cloze with an empty hint.
