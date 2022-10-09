@@ -33,12 +33,20 @@ class AudioClozeHelpers
   end
   
   def self.get_answer(text)
-    clozeRe = /\[(.*?)(\|.*?)?\]/
-    if (text !~ clozeRe)
-      return text
+    ms = self.get_matches(text)
+    return text if ms.length == 0
+
+    answer = text
+    ms.each do |m|
+      answer = answer.gsub(m[0], m[:answer]).gsub(/\s+/, ' ')
     end
-    question = text.gsub(clozeRe, '\1').gsub(/\s+/, ' ')
-    return question
+
+    # details = ms.map { |m| m[:details] }.select { |h| !h.nil? }.select { |h| h != '' }
+    # if (details.size > 0) then
+    #   answer = "#{details.join(', ')}.  #{answer}"
+    # end
+
+    return answer
   end
 
 end
