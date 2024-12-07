@@ -28,7 +28,7 @@ For example, the text file line:
 
 Would become the following "audio cloze card":
 
-Front: Tener.  Yo <shhhh> un gato.   _(generated audio replaces the clozed word with "shhhh")_
+Front: Tener.  Yo _shhhh_ un gato.   _(generated audio replaces the clozed word with "shhhh")_
 Back: Yo tengo un gato
 
 ### Troubleshooting
